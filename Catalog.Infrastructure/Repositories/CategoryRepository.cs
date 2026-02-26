@@ -27,5 +27,17 @@ namespace Catalog.Infrastructure.Repositories
 
         public async Task AddAsync(Category category) =>
             await _context.Categories.AddAsync(category);
+
+
+        public async Task UpdateAsync(Category category) =>
+           _context.Categories.Update(category);
+
+        public async Task DeleteAsync(int id)
+        {
+            var category = await _context.Categories.FindAsync(id);
+            if (category != null)
+                _context.Categories.Remove(category);
+        }
+
     }
 }
