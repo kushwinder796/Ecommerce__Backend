@@ -6,15 +6,24 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Command\CommandHandler\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Interface\IAuthRepository\" />
-    <Folder Include="Queries\QueriesHandler\" />
+    <Compile Remove="Interface\IAuthRepository\**" />
+    <EmbeddedResource Remove="Interface\IAuthRepository\**" />
+    <None Remove="Interface\IAuthRepository\**" />
   </ItemGroup>
 
   <ItemGroup>
  
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
+ 
     <PackageReference Include="MediatR" Version="14.0.0" />
+ 
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.1" />
+ 
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Identity.Domain\Identity.Domain.csproj" />
   </ItemGroup>
 
 </Project>
