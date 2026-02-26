@@ -47,6 +47,7 @@ builder.Services.AddMediatR(cfg =>
 });
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IImageService, ImageService>();
 
 var app = builder.Build();
 

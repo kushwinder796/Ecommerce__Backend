@@ -10,16 +10,17 @@ namespace Catalog.Application.Command.CommandHandler
 {
     public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, bool>
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public UpdateProductHandler(IProductRepository repository)
+        public UpdateProductHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle( UpdateProductCommand request,CancellationToken cancellationToken)
+        public async Task<bool> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(request.Id);
+            var product = await _unitOfWork.Products.GetByIdAsync(request.Id);
+
             if (product == null) return false;
 
             product.Name = request.Name;
@@ -28,7 +29,8 @@ namespace Catalog.Application.Command.CommandHandler
             product.Stock = request.Stock;
             product.CategoryId = request.CategoryId;
 
-            await _repository.UpdateAsync(product);
+            await _unitOfWork.Products.UpdateAsync(product);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
     }

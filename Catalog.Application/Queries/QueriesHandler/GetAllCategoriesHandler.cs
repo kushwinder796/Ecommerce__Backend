@@ -9,20 +9,18 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Queries.QueriesHandler
 {
-    public class GetAllCategoriesHandler
-      : IRequestHandler<GetAllCategoriesQuery, List<CategoryDto>>
+    public class GetAllCategoriesHandler: IRequestHandler<GetAllCategoriesQuery, List<CategoryDto>>
     {
-        private readonly ICategoryRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAllCategoriesHandler(ICategoryRepository repository)
+        public GetAllCategoriesHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<List<CategoryDto>> Handle(GetAllCategoriesQuery request,CancellationToken cancellationToken)
         {
-            var categories = await _repository.GetAllAsync();
-
+            var categories = await _unitOfWork.Categories.GetAllAsync();
             return categories.Select(c => new CategoryDto
             {
                 Id = c.Id,

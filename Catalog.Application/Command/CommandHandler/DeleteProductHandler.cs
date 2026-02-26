@@ -10,19 +10,21 @@ namespace Catalog.Application.Command.CommandHandler
 {
     public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, bool>
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public DeleteProductHandler(IProductRepository repository)
+        public DeleteProductHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<bool> Handle(DeleteProductCommand request,CancellationToken cancellationToken)
+        public async Task<bool> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(request.Id);
+            var product = await _unitOfWork.Products.GetByIdAsync(request.Id);
+
             if (product == null) return false;
 
-            await _repository.DeleteAsync(request.Id);
+            await _unitOfWork.Products.DeleteAsync(request.Id);
+            await _unitOfWork.SaveChangesAsync();
             return true;
         }
     }

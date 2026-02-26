@@ -9,24 +9,27 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Queries.QueriesHandler
 {
-    public class GetAllProductsHandler : IRequestHandler<GetAllProductsQuery, List<ProductDto>>
+    public class GetAllProductsHandler
+     : IRequestHandler<GetAllProductsQuery, List<ProductDto>>
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetAllProductsHandler(IProductRepository repository)
+        public GetAllProductsHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<ProductDto>> Handle(GetAllProductsQuery request, CancellationToken cancellationToken)
+        public async Task<List<ProductDto>> Handle( GetAllProductsQuery request,CancellationToken cancellationToken)
         {
-            var products = await _repository.GetAllAsync();
+            var products = await _unitOfWork.Products.GetAllAsync();
             return products.Select(p => new ProductDto
             {
                 Id = p.Id,
                 Name = p.Name,
+                Description = p.Description,
                 Price = p.Price,
-                Description = p.Description
+                Stock = p.Stock,
+                CategoryId = p.CategoryId
             }).ToList();
         }
     }

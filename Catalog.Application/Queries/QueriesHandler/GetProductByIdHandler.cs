@@ -9,20 +9,20 @@ using System.Threading.Tasks;
 
 namespace Catalog.Application.Queries.QueriesHandler
 {
-    public class GetProductByIdHandler : IRequestHandler<GetProductByIdQuery, ProductDto?>
+    public class GetProductByIdHandler: IRequestHandler<GetProductByIdQuery, ProductDto?>
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetProductByIdHandler(IProductRepository repository)
+        public GetProductByIdHandler(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<ProductDto?> Handle(
-            GetProductByIdQuery request,
-            CancellationToken cancellationToken)
+        public async Task<ProductDto?> Handle(GetProductByIdQuery request,CancellationToken cancellationToken)
         {
-            var product = await _repository.GetByIdAsync(request.Id);
+            var product = await _unitOfWork.Products
+                .GetByIdAsync(request.Id);
+
             if (product == null) return null;
 
             return new ProductDto
