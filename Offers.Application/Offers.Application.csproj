@@ -6,18 +6,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Command\CommandHandler\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Interface\IOrderRepository\" />
-    <Folder Include="Queries\QueriesHandler\" />
+    <Compile Remove="Interface\IOrderRepository\**" />
+    <EmbeddedResource Remove="Interface\IOrderRepository\**" />
+    <None Remove="Interface\IOrderRepository\**" />
   </ItemGroup>
-
-	<ItemGroup>
-	</ItemGroup>
 
 	<ItemGroup>
 	
 	  <PackageReference Include="MediatR" Version="14.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Offers.Domain\Offers.Domain.csproj" />
 	</ItemGroup>
 
 </Project>

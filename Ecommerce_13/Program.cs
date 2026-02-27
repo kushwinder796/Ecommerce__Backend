@@ -12,7 +12,10 @@ using Identity.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Offers.Application.Command;
+using Offers.Application.Interface;
 using Offers.Infrastructure.Persistence;
+using Offers.Infrastructure.Repositories;
 using Order.Application.Command;
 using Order.Application.Interface;
 using Order.Infrastructure.Repositories;
@@ -95,6 +98,9 @@ builder.Services.AddMediatR(cfg =>
 
     cfg.RegisterServicesFromAssembly(
         typeof(CreateOrderCommand).Assembly);
+
+    cfg.RegisterServicesFromAssembly(
+        typeof(CreateOfferCommand).Assembly);
 });
 
 builder.Services.AddAuthentication(
@@ -122,6 +128,7 @@ builder.Services.AddAuthentication(
 builder.Services.AddScoped<Identity.Application.Interface.IidentityUnitOfWork,
  Identity.Infrastructure.Repositories.IdentityUnitOfWork>();
 builder.Services.AddScoped<IOrderUnitOfWork,OrderUnitOfWork>();
+builder.Services.AddScoped<IOfferUnitOfWork, OfferUnitOfWork>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IImageService, ImageService>();

@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
     <Folder Include="Persistence\" />
   </ItemGroup>
 
@@ -22,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Offers.Application\Offers.Application.csproj" />
     <ProjectReference Include="..\Offers.Domain\Offers.Domain.csproj" />
+    <ProjectReference Include="..\Order.Infrastructure\Order.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
