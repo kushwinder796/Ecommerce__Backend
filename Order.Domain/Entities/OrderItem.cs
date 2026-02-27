@@ -20,11 +20,11 @@ public partial class OrderItem
     public Guid? ProductId { get; set; }
 
     [Column("quantity")]
-    public int Quantity { get; set; }
+    public int? Quantity { get; set; }
 
     [Column("price")]
     [Precision(10, 2)]
-    public decimal Price { get; set; }
+    public decimal? Price { get; set; }
 
     [ForeignKey("OrderId")]
     [InverseProperty("OrderItems")]

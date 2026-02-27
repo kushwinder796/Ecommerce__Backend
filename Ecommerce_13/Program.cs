@@ -13,8 +13,12 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Offers.Infrastructure.Persistence;
+using Order.Application.Command;
+using Order.Application.Interface;
+using Order.Infrastructure.Repositories;
 using Orders.Infrastructure.Persistence;
 using Payment.Infrastructure.Persistence;
+using System.Security.Claims;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +26,42 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    {
+        Title = "Ecommerce_13 API",
+        Version = "v1"
+    });
+
+    c.AddSecurityDefinition("Bearer", new
+        Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Enter: Bearer {your token here}"
+    });
+
+    c.AddSecurityRequirement(new
+        Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 builder.Services.AddDbContext<CatalogDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -53,6 +92,9 @@ builder.Services.AddMediatR(cfg =>
 
     cfg.RegisterServicesFromAssembly(
         typeof(RegisterUserCommand).Assembly);
+
+    cfg.RegisterServicesFromAssembly(
+        typeof(CreateOrderCommand).Assembly);
 });
 
 builder.Services.AddAuthentication(
@@ -70,13 +112,16 @@ builder.Services.AddAuthentication(
                 ValidAudience = builder.Configuration["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(
                     Encoding.UTF8.GetBytes(
-                        builder.Configuration["Jwt:Key"]!))
+                        builder.Configuration["Jwt:Key"]!)),
+
+                RoleClaimType = ClaimTypes.Role,
+                NameClaimType = ClaimTypes.NameIdentifier,
             };
     });
 
 builder.Services.AddScoped<Identity.Application.Interface.IidentityUnitOfWork,
  Identity.Infrastructure.Repositories.IdentityUnitOfWork>();
-
+builder.Services.AddScoped<IOrderUnitOfWork,OrderUnitOfWork>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IImageService, ImageService>();
@@ -89,9 +134,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
-app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseExceptionHandler();
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

@@ -18,7 +18,7 @@ public partial class OrderEntity
 
     [Column("status")]
     [StringLength(50)]
-    public string Status { get; set; }
+    public string? Status { get; set; }
 
     [Column("total_amount")]
     [Precision(12, 2)]

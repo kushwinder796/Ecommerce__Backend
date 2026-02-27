@@ -20,8 +20,7 @@ namespace Catalog.Application.Queries.QueriesHandler
 
         public async Task<CategoryDto?> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
-            var category = await _unitOfWork.Categories
-                .GetByIdAsync(request.Id);
+            var category = await _unitOfWork.Categories.GetByIdAsync(request.Id);
 
             if (category == null) return null;
 
