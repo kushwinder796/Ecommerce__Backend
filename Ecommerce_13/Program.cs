@@ -20,7 +20,9 @@ using Order.Application.Command;
 using Order.Application.Interface;
 using Order.Infrastructure.Repositories;
 using Orders.Infrastructure.Persistence;
+using Payment.Application.Interface;
 using Payment.Infrastructure.Persistence;
+using Payment.Infrastructure.Repositories;
 using System.Security.Claims;
 using System.Text;
 
@@ -131,7 +133,9 @@ builder.Services.AddScoped<IOrderUnitOfWork,OrderUnitOfWork>();
 builder.Services.AddScoped<IOfferUnitOfWork, OfferUnitOfWork>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IPaymentUnitOfWork, PaymentUnitOfWork>();
 builder.Services.AddScoped<IImageService, ImageService>();
+builder.Services.AddScoped<IStripeService, StripeService>();
 
 var app = builder.Build();
 

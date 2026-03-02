@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Payment.Infrastructure.Persistence.Entities;
 
 [Table("payments", Schema = "payments")]
-public partial class PaymentSysten
+public partial class PaymentSystem
 {
     [Key]
     [Column("id")]

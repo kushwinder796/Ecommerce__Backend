@@ -6,14 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Command\CommandHandler\" />
-    <Folder Include="DTOs\" />
-    <Folder Include="Interface\IPaymentRepository\" />
-    <Folder Include="Queries\Querieshandler\" />
+    <Compile Remove="Interface\IPaymentRepository\**" />
+    <EmbeddedResource Remove="Interface\IPaymentRepository\**" />
+    <None Remove="Interface\IPaymentRepository\**" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="MediatR" Version="14.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Payment.Domain\Payment.Domain.csproj" />
   </ItemGroup>
 
 </Project>
