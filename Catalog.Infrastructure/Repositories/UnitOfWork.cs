@@ -1,5 +1,6 @@
 ﻿using Catalog.Application.Interface;
 using Catalog.Infrastructure.Persistence;
+using Order.Application.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Catalog.Infrastructure.Repositories
         private readonly CatalogDbContext _context;
         public IProductRepository Products { get; }
         public ICategoryRepository Categories { get; }
+        public IOrderItemRepository OrderItems { get; }
 
         public UnitOfWork(CatalogDbContext context)
         {

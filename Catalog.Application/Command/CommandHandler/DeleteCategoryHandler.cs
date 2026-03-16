@@ -19,9 +19,17 @@ namespace Catalog.Application.Command.CommandHandler
 
         public async Task<bool> Handle(DeleteCategoryCommand request,CancellationToken cancellationToken)
         {
+
             var category = await _unitOfWork.Categories.GetByIdAsync(request.Id);
 
             if (category == null) return false;
+
+            var hasProducts = await _unitOfWork.Products.AnyAsync(p => p.CategoryId == request.Id);
+
+            if (hasProducts)
+                throw new InvalidOperationException(
+                    "Cannot delete! This category has products. Delete products first.");
+
 
             await _unitOfWork.Categories.DeleteAsync(request.Id);
             await _unitOfWork.SaveChangesAsync();

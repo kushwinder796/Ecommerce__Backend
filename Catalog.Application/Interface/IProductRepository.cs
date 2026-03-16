@@ -1,4 +1,5 @@
-﻿using Catalog.Infrastructure.Persistence.Entities;
+﻿
+using Catalog.Infrastructure.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace Catalog.Application.Interface
         Task UpdateAsync(Product product);
         Task DeleteAsync(Guid id);
         Task<bool> CategoryExistsAsync(int categoryId);
+        Task<bool> AnyAsync(System.Linq.Expressions.Expression<Func<Product, bool>> predicate);
 
     }
 }

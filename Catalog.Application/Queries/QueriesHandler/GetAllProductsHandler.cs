@@ -29,6 +29,7 @@ namespace Catalog.Application.Queries.QueriesHandler
                 Description = p.Description,
                 Price = p.Price,
                 Stock = p.Stock,
+                ImageUrl=p.ImageUrl,
                 CategoryId = p.CategoryId
             }).ToList();
         }

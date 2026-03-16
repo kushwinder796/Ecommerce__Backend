@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,5 +42,10 @@ namespace Catalog.Infrastructure.Repositories
         public async Task<bool> CategoryExistsAsync(int categoryId) =>
             await _context.Categories
                 .AnyAsync(c => c.Id == categoryId);
+
+        public async Task<bool> AnyAsync(Expression<Func<Product, bool>> predicate)
+        {
+            return await _context.Products.AnyAsync(predicate);
+        }
     }
 }

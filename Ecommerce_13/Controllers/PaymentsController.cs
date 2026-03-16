@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Payment.Application.Command;
 using Payment.Application.DTOs;
 using Payment.Application.Queries;
+using Stripe;
+using Stripe.Checkout;
 
 namespace Ecommerce_13.Controllers
 {
@@ -13,10 +15,13 @@ namespace Ecommerce_13.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly IConfiguration _configuration;
 
-        public PaymentsController(IMediator mediator)
+
+        public PaymentsController(IMediator mediator, IConfiguration configuration)
         {
             _mediator = mediator;
+            _configuration = configuration;
         }
 
 
@@ -77,5 +82,73 @@ namespace Ecommerce_13.Controllers
 
             return Ok(ApiResponse<string>.SuccessResult(data: null, message: "Payment deleted successfully",statusCode: 200));
         }
+
+        [HttpPost("create-session")]
+        public async Task<IActionResult> CreateSession([FromBody] CreateCheckoutSessionCommand command)
+        {
+            try
+            {
+                var lineItems = command.Items.Select(item => new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        Currency = command.Currency ?? "inr",
+                        UnitAmount = (long)(item.Price * 100),
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = item.Name,
+                            Images = item.ImageUrl != null
+                                     ? new List<string> { item.ImageUrl }
+                                     : null,
+                        },
+                    },
+                    Quantity = item.Quantity,
+                }).ToList();
+
+                var options = new SessionCreateOptions
+                {
+                    PaymentMethodTypes = new List<string> { "card" },
+                    LineItems = lineItems,
+                    Mode = "payment",
+                    CustomerEmail = command.CustomerEmail,
+                    SuccessUrl = command.SuccessUrl
+                                         + "?orderId=" + command.OrderId
+                                         + "&session_id={CHECKOUT_SESSION_ID}",
+                    CancelUrl = command.CancelUrl,
+                    Metadata = new Dictionary<string, string>
+                    {
+                        { "orderId", command.OrderId }
+                    }
+                };
+
+                var service = new SessionService();
+                var session = await service.CreateAsync(options);
+
+                return Ok(ApiResponse<object>.SuccessResult(new
+                {
+                    url = session.Url,      
+                    sessionId = session.Id,
+                }, "Checkout session created"));
+            }
+            catch (StripeException ex)
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = ex.Message,
+                    statusCode = 400,
+                    errors = (object?)null
+                });
+            }
+        }
+
+        [HttpGet("publishable-key")]
+        public IActionResult GetPublishableKey()
+        {
+            return Ok(ApiResponse<string>.SuccessResult(
+                _configuration["Stripe:PublishableKey"]!,"Publishable key retrieved"
+            ));
+        }
+
     }
 }

@@ -32,6 +32,7 @@ namespace Catalog.Application.Queries.QueriesHandler
                 Description = product.Description,
                 Price = product.Price,
                 Stock = product.Stock,
+                ImageUrl=product.ImageUrl,
                 CategoryId = product.CategoryId
             };
         }

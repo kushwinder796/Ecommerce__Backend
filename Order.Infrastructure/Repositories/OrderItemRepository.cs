@@ -31,5 +31,18 @@ namespace Order.Infrastructure.Repositories
             if (item != null)
                 _context.OrderItems.Remove(item);
         }
+
+        public async Task<List<OrderItem>> GetByProductIdAsync(Guid productId)
+        {
+            return await _context.OrderItems
+       .Where(o => o.ProductId == productId)
+       .ToListAsync();
+        }
+
+        public async Task DeleteRangeAsync(List<OrderItem> items)
+        {
+            _context.OrderItems.RemoveRange(items);
+            await Task.CompletedTask;
+        }
     }
 }

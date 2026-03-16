@@ -12,5 +12,7 @@ namespace Order.Application.Interface
         Task<IEnumerable<OrderItem>> GetByOrderIdAsync(Guid orderId);
         Task AddAsync(OrderItem orderItem);
         Task DeleteAsync(Guid id);
+        Task<List<OrderItem>> GetByProductIdAsync(Guid productId); 
+        Task DeleteRangeAsync(List<OrderItem> items);
     }
 }
