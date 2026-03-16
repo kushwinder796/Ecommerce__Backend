@@ -11,5 +11,7 @@ namespace Payment.Application.DTOs
         public Guid? OrderId { get; set; }
         public string PaymentMethod { get; set; }
         public decimal? Amount { get; set; }
+        public string? PaymentStatus { get; set; }  
+        public string? TransactionId { get; set; }
     }
 }

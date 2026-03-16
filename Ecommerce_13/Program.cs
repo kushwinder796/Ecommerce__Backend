@@ -21,6 +21,7 @@ using Order.Application.Command;
 using Order.Application.Interface;
 using Order.Infrastructure.Repositories;
 using Orders.Infrastructure.Persistence;
+using Payment.Application.Command;
 using Payment.Application.Interface;
 using Payment.Application.Setting;
 using Payment.Infrastructure.Persistence;
@@ -28,12 +29,14 @@ using Payment.Infrastructure.Repositories;
 using Stripe;
 using System.Security.Claims;
 using System.Text;
-
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+
 
 
 
@@ -102,6 +105,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(RegisterUserCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateOfferCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommand).Assembly);
 });
 
 
@@ -170,13 +174,12 @@ if (app.Environment.IsDevelopment())
 
 app.UseExceptionHandler();
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection(); 
 
 app.UseCors("AllowFrontend");
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 
 app.MapGet("/", () => "API Running...");
 

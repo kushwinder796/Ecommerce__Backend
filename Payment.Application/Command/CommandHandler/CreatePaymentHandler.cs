@@ -14,36 +14,38 @@ namespace Payment.Application.Command.CommandHandler
     {
         private readonly IPaymentUnitOfWork _context;
         private readonly IStripeService _stripe;
+        private readonly TimeZoneInfo _indiaTimeZone;
 
         public CreatePaymentHandler(IPaymentUnitOfWork context, IStripeService stripe)
         {
             _context = context;
             _stripe = stripe;
+            _indiaTimeZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
         }
 
         public async Task<StripePaymentResponseDto> Handle(CreatePaymentCommand request, CancellationToken ct)
         {
-            
-            var stripeResponse = await _stripe.CreatePaymentIntentAsync(new StripePaymentRequestDto
-            {
-                OrderId = request.Dto.OrderId ?? Guid.Empty,
-                Amount = request.Dto.Amount ?? 0,
-                Currency = "usd",
-                Description = $"Payment for Order {request.Dto.OrderId}"
-            });
+            DateTime nowIst = DateTime.SpecifyKind(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indiaTimeZone),
+              DateTimeKind.Unspecified);
 
             var payment = new PaymentSystem
             {
+                Id = Guid.NewGuid(),
                 OrderId = request.Dto.OrderId,
-                PaymentMethod = request.Dto.PaymentMethod,
+                PaymentMethod = request.Dto.PaymentMethod ?? "card",
                 Amount = request.Dto.Amount,
-                TransactionId = stripeResponse.PaymentIntentId
+                PaymentStatus = request.Dto.PaymentStatus ?? "Paid",
+                TransactionId = request.Dto.TransactionId,
+                CreatedAt = nowIst,
             };
 
             await _context.Payments.AddAsync(payment);
-            await _context.SaveChangesAsync(ct);
+            await _context.SaveChangesAsync(CancellationToken.None);
 
-            return stripeResponse;
+            return new StripePaymentResponseDto
+            {
+                PaymentIntentId = payment.TransactionId
+            };
         }
     }
 }

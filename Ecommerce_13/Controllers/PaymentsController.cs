@@ -1,5 +1,6 @@
 ﻿using Ecommerce_13.Comman;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Payment.Application.Command;
@@ -10,7 +11,7 @@ using Stripe.Checkout;
 
 namespace Ecommerce_13.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Payment")]
     [ApiController]
     public class PaymentsController : ControllerBase
     {
@@ -149,6 +150,58 @@ namespace Ecommerce_13.Controllers
                 _configuration["Stripe:PublishableKey"]!,"Publishable key retrieved"
             ));
         }
+        [HttpPost("webhook")]
+        [AllowAnonymous]
+        public async Task<IActionResult> StripeWebhook()
+        {
+            var json = await new StreamReader(HttpContext.Request.Body).ReadToEndAsync();
+            var webhookSecret = _configuration["Stripe:WebhookSecret"];
 
+            try
+            {
+                var stripeEvent = EventUtility.ConstructEvent(
+                    json,
+                    Request.Headers["Stripe-Signature"],
+                    webhookSecret
+                );
+
+                if (stripeEvent.Type == "checkout.session.completed")
+                {
+                    var session = stripeEvent.Data.Object as Session;
+
+                    if (!session.Metadata.ContainsKey("orderId"))
+                    {
+                        Console.WriteLine("No orderId in metadata!");
+                        return Ok();
+                    }
+
+                    var orderIdStr = session.Metadata["orderId"];
+                    Console.WriteLine($"OrderId received: {orderIdStr}");
+
+                    if (!Guid.TryParse(orderIdStr, out Guid orderId))
+                    {
+                        Console.WriteLine($"Invalid Guid: {orderIdStr}");
+                        return Ok();
+                    }
+
+                    var dto = new CreatePaymentDto
+                    {
+                        OrderId = orderId,
+                        PaymentMethod = "card",
+                        Amount = session.AmountTotal!.Value / 100m,
+                        PaymentStatus = "Paid",
+                        TransactionId = session.PaymentIntentId
+                    };
+
+                    await _mediator.Send(new CreatePaymentCommand(dto), CancellationToken.None);
+                }
+
+                return Ok(); 
+            }
+            catch (StripeException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
