@@ -29,6 +29,7 @@ using Payment.Infrastructure.Repositories;
 using Stripe;
 using System.Security.Claims;
 using System.Text;
+using YourApp.Services;
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 var builder = WebApplication.CreateBuilder(args);
 
@@ -133,7 +134,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 });
 
 
-
+builder.Services.AddHttpClient<IChatService, GeminiChatService>();
 builder.Services.AddScoped<IidentityUnitOfWork, IdentityUnitOfWork>();
 builder.Services.AddScoped<IOrderUnitOfWork, OrderUnitOfWork>();
 builder.Services.AddScoped<IOfferUnitOfWork, OfferUnitOfWork>();
@@ -152,7 +153,6 @@ builder.Services.AddCors(options =>
         policy.WithOrigins(
             "http://localhost:3000",
             "http://localhost:3001",
-            "http://localhost:3002",
             "http://localhost:3003",
             "http://localhost:3004",
             "http://localhost:3005"
