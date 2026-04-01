@@ -14,6 +14,7 @@ namespace Order.Application.DTOs
         public decimal? TotalAmount { get; set; }
         public DateTime? CreatedAt { get; set; }
         public List<OrderItemDto> OrderItems { get; set; } = new List<OrderItemDto>();
+
     }
 }
 
