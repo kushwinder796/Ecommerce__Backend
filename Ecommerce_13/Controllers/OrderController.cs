@@ -89,7 +89,7 @@ namespace Ecommerce_13.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> ConfirmOrder([FromBody] OrderConfirmationDto order)
         {
-            Console.WriteLine("API HIT");
+         
 
             if (order == null)
                 return BadRequest(new { success = false, message = "Invalid order data" });
@@ -182,10 +182,10 @@ namespace Ecommerce_13.Controllers
             email.Body = new TextPart("html")
             {
                 Text = $@"
-            <h2>Order Confirmed!</h2>
-            <p>Hi {order.CustomerName}</p>
-            <p>Order ID: {order.Id}</p>
-            <p>Total: ₹{order.TotalAmount}</p>
+             <h2>Order Confirmed!</h2>
+             <p>Hi {order.CustomerName}</p>
+             <p>Order ID: {order.Id}</p>
+             <p>Total: ₹{order.TotalAmount}</p>
              
         "
             };

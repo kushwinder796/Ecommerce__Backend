@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net9.0</TargetFramework>
@@ -9,12 +9,12 @@
 	  <PackageReference Include="Google_GenerativeAI" Version="1.0.1" />
 	  <PackageReference Include="MailKit" Version="4.15.1" />
 	  <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.3" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.3">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.1">
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.3">
 	    <PrivateAssets>all</PrivateAssets>
 	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 	  </PackageReference>
@@ -26,11 +26,11 @@
 
 	<ItemGroup>
 	  <ProjectReference Include="..\Catalog.Infrastructure\Catalog.Infrastructure.csproj" />
+	  <ProjectReference Include="..\Conversation.Infrastructure\Conversation.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Identity.Infrastructure\Identity.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Offer.Infrastructure\Offers.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Order.Infrastructure\Order.Infrastructure.csproj" />
 	  <ProjectReference Include="..\Payment.Infrastructure\Payment.Infrastructure.csproj" />
 	</ItemGroup>
-
 
 </Project>

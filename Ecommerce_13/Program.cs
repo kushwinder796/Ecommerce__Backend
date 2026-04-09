@@ -3,6 +3,10 @@ using Catalog.Application.Interface;
 using Catalog.Application.Services;
 using Catalog.Infrastructure.Persistence;
 using Catalog.Infrastructure.Repositories;
+using Conversation.Application.Command;
+using Conversation.Application.Interface;
+using Conversation.Infrastructure.Persistence;
+using Conversation.Infrastructure.Repositories;
 using Ecommerce_13.Comman;
 using Identity.Application.Command;
 using Identity.Application.Interface;
@@ -36,6 +40,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSignalR();
 
 
 
@@ -91,6 +96,9 @@ builder.Services.AddDbContext<PaymentDbContext>(options =>
 builder.Services.AddDbContext<OffersDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<ConversationDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.Configure<StripeSettings>( builder.Configuration.GetSection("Stripe"));
 
 StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
@@ -107,6 +115,8 @@ builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(typeof(CreateOrderCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreateOfferCommand).Assembly);
     cfg.RegisterServicesFromAssembly(typeof(CreatePaymentCommand).Assembly);
+    cfg.RegisterServicesFromAssembly(typeof(StartConversationCommand).Assembly);
+
 });
 
 
@@ -143,6 +153,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPaymentUnitOfWork, PaymentUnitOfWork>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IStripeService, StripeService>();
+builder.Services.AddScoped<IConversationRepository, ConversationRepository>();
+builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 
 
@@ -184,6 +196,7 @@ app.UseAuthorization();
 app.MapGet("/", () => "API Running...");
 
 app.MapControllers();
+app.MapHub<Ecommerce_13.Hubs.ChatHub>("/chathub");
 
 app.UseStaticFiles();
 
