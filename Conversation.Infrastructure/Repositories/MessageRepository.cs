@@ -1,6 +1,6 @@
-﻿using Conversation.Application.Interface;
+using Conversation.Application.Interface;
 using Conversation.Infrastructure.Persistence;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,16 +21,29 @@ namespace Conversation.Infrastructure.Repositories
 
         public async Task AddAsync(Message message)
         {
-            await _context.Messages.AddAsync(message);
+
+            if (message.SenderId == Guid.Empty)
+                throw new InvalidOperationException("SenderId cannot be empty");
+
+            if (string.IsNullOrWhiteSpace(message.messagetext))
+                throw new InvalidOperationException("MessageText cannot be empty");
+
+            _context.Messages.Add(message);
             await _context.SaveChangesAsync();
         }
 
         public async Task<List<Message>> GetByConversationIdAsync(Guid conversationId)
         {
             return await _context.Messages
-                .Where(x => x.ConversationId == conversationId)
-                .OrderBy(x => x.CreatedAt)
+                .Where(m => m.ConversationId == conversationId)
+                .OrderBy(m => m.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task UpdateAsync(Message message)
+        {
+            _context.Messages.Update(message);
+            await _context.SaveChangesAsync();
         }
     }
 }

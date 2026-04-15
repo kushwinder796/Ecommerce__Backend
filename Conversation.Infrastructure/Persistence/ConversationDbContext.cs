@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conversation.Infrastructure.Persistence;
@@ -41,6 +41,7 @@ public partial class ConversationDbContext : DbContext
                 .HasColumnName("created_at");
             entity.Property(e => e.ProductId).HasColumnName("product_id");
             entity.Property(e => e.Status)
+                .HasDefaultValue(0)
                 .HasColumnName("status");
             entity.Property(e => e.UpdatedAt)
                 .HasColumnType("timestamp without time zone")
@@ -54,6 +55,8 @@ public partial class ConversationDbContext : DbContext
 
             entity.ToTable("messages", "conversation");
 
+            entity.HasIndex(e => e.SenderId, "IX_messages_SenderId");
+
             entity.Property(e => e.Id)
                 .HasDefaultValueSql("gen_random_uuid()")
                 .HasColumnName("id");
@@ -62,9 +65,11 @@ public partial class ConversationDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
-            entity.Property(e => e.MessageText).HasColumnName("message");
-            entity.Property(e => e.SenderType)
-                .HasColumnName("sender_type");
+            entity.Property(e => e.messagetext).HasColumnName("message");
+            entity.Property(e => e.SenderId).HasColumnName("sender_id");
+            entity.Property(e => e.SenderName).HasMaxLength(255);
+            entity.Property(e => e.SenderType).HasColumnName("sender_type");
+            entity.Property(e => e.Status).HasDefaultValue(0);
 
             entity.HasOne(d => d.Conversation).WithMany(p => p.Messages)
                 .HasForeignKey(d => d.ConversationId)

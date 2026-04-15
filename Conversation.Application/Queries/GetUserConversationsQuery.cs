@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Conversation.Application.Queries
 {
-    public class GetUserConversationsQuery : IRequest<List<ConversationDto>>
+    public class GetUserConversationsQuery : IRequest<List<ConversationResponse>>
     {
         public Guid UserId { get; set; }
     }

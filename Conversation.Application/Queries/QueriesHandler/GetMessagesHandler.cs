@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Conversation.Application.Queries.QueriesHandler
 {
-    public class GetMessagesHandler: IRequestHandler<GetMessagesQuery, List<MessageDto>>
+    public class GetMessagesHandler: IRequestHandler<GetMessagesQuery, List<MessageResponse>>
     {
         private readonly IMessageRepository _messageRepository;
 
@@ -18,13 +18,13 @@ namespace Conversation.Application.Queries.QueriesHandler
             _messageRepository = messageRepository;
         }
 
-        public async Task<List<MessageDto>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
+        public async Task<List<MessageResponse>> Handle(GetMessagesQuery request, CancellationToken cancellationToken)
         {
             var messages = await _messageRepository.GetByConversationIdAsync(request.ConversationId);
 
-            return messages.Select(m => new MessageDto
+            return messages.Select(m => new MessageResponse
             {
-                Message = m.ToString(),
+                MessageText = m.ToString(),
                 SenderType = m.SenderType,
                 CreatedAt = m.CreatedAt
             }).ToList();

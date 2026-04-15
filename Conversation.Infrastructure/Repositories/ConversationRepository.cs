@@ -1,6 +1,6 @@
-﻿using Conversation.Application.Interface;
+using Conversation.Application.Interface;
 using Conversation.Infrastructure.Persistence;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -21,6 +21,11 @@ namespace Conversation.Infrastructure.Repositories
         {
             await _context.ConversationSystems.AddAsync(conversation);
             await _context.SaveChangesAsync();
+        }
+
+        public IQueryable<ConversationSystem> GetAllAsQueryable()
+        {
+            return _context.ConversationSystems;
         }
 
         public async Task<List<ConversationSystem>> GetAllAsync()

@@ -25,7 +25,7 @@ namespace Conversation.Application.Command.CommandHandler
             if (conversation == null) throw new Exception("Conversation not found");
             DateTime nowIst = DateTime.SpecifyKind(TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, _indiaTimeZone), DateTimeKind.Unspecified);
 
-            conversation.Status = ConversationStatus.Closed;
+            //conversation.Status = MessageStatus.Closed;
             conversation.UpdatedAt = nowIst;
             await _conversationRepo.UpdateAsync(conversation);
             return Unit.Value;

@@ -1,6 +1,6 @@
 ﻿using Conversation.Application.Interface;
+using Conversation.Domain.Entities;
 using Conversation.Domain.Enum;
-using Conversation.Infrastructure.Persistence.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,7 @@ namespace Conversation.Application.Command.CommandHandler
                 Id = Guid.NewGuid(),
                 UserId = request.UserId,
                 ProductId = request.ProductId,
-                Status = ConversationStatus.Open,
+                Status = (int)ConversationStatus.Open,
                 CreatedAt = nowIst
             };
 

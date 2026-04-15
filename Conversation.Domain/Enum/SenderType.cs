@@ -8,7 +8,7 @@ namespace Conversation.Domain.Enum
 {
     public enum SenderType
     {
-        USER,
-        ADMIN
+        User = 0,
+        Admin = 1
     }
 }

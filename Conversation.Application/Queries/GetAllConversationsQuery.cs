@@ -3,7 +3,8 @@ using MediatR;
 
 namespace Conversation.Application.Queries
 {
-    public class GetAllConversationsQuery : IRequest<List<ConversationDto>>
+    public class GetAllConversationsQuery : IRequest<List<ConversationResponse>>
     {
+
     }
 }

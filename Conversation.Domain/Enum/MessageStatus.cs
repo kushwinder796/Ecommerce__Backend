@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Conversation.Domain.Enum
 {
-    public enum ConversationStatus
+    public enum MessageStatus
     {
-        Open = 0,
-        Closed = 1,
-        Archived = 2
+        Sent = 0,
+        Delivered = 1,
+        Read = 2
     }
 }
