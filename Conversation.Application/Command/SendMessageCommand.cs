@@ -16,6 +16,6 @@ namespace Conversation.Application.Command
         public string? SenderName { get; set; }       // Sender's display name
         public SenderType SenderType { get; set; }    //  USER or ADMIN
         public Guid? TargetUserId { get; set; }       //  For admin replies (who to notif)
-
+        public Guid? ParentMessageId { get; set; }    //  For replies to existing messages
     }
 }

@@ -1,5 +1,6 @@
 using Conversation.Application.Command;
 using Conversation.Application.Queries;
+using Conversation.Application.DTOs;
 using Conversation.Domain.Enum;
 using Ecommerce_13.Hubs;
 using MediatR;
@@ -133,7 +134,7 @@ public class ConversationController : ControllerBase
             var role = GetUserRoleFromToken();
             var userName = GetUserNameFromToken();
 
-            // Set sender type based on role (Case-insensitive check)
+           
             command.SenderType = string.Equals(role, "Admin", StringComparison.OrdinalIgnoreCase) 
                 ? SenderType.Admin 
                 : SenderType.User;
@@ -147,21 +148,32 @@ public class ConversationController : ControllerBase
             );
 
             // Broadcast to conversation group via SignalR
+            var messagePayload = new
+            {
+                id = Guid.NewGuid(),
+                conversationId = command.ConversationId,
+                messageText = command.MessageText,
+                text = command.MessageText,
+                senderId = userId,
+                senderName = userName,
+                senderType = command.SenderType.ToString(),
+                status = "Sent",
+                createdAt = nowIst,
+                targetUserId = command.TargetUserId,
+                parentMessageId = command.ParentMessageId
+            };
+
             await _hubContext.Clients
                 .Group(command.ConversationId.ToString())
-                .SendAsync("ReceiveMessage", new
-                {
-                    id = Guid.NewGuid(),
-                    conversationId = command.ConversationId,
-                    messageText = command.MessageText,
-                    text = command.MessageText,              
-                    senderId = userId,
-                    senderName = userName,
-                    senderType = command.SenderType.ToString(),
-                    status = "Sent",
-                    createdAt = nowIst,
-                    targetUserId = command.TargetUserId
-                });
+                .SendAsync("ReceiveMessage", messagePayload);
+
+            // Also notify Admins group if sender is a User
+            if (command.SenderType == SenderType.User)
+            {
+                await _hubContext.Clients
+                    .Group("Admins")
+                    .SendAsync("NewMessageNotification", messagePayload);
+            }
 
             return Ok(new
             {
@@ -187,6 +199,40 @@ public class ConversationController : ControllerBase
                 error = "Failed to send message",
                 details = ex.Message
             });
+        }
+    }
+
+    [Authorize]
+    [HttpPost("react")]
+    public async Task<IActionResult> AddReaction([FromBody] AddReactionCommand command)
+    {
+        try
+        {
+            var userId = GetUserIdFromToken();
+            command.UserId = userId;
+
+            var result = await _mediator.Send(command);
+
+            if (result.Success)
+            {
+                // Broadcast reaction update
+                await _hubContext.Clients
+                    .Group(result.ConversationId.ToString())
+                    .SendAsync("ReceiveReaction", new
+                    {
+                        messageId = result.MessageId,
+                        conversationId = result.ConversationId,
+                        reactions = result.Reactions
+                    });
+
+                return Ok(new { success = true, reactions = result.Reactions });
+            }
+
+            return BadRequest(new { error = "Failed to add reaction" });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { error = ex.Message });
         }
     }
 

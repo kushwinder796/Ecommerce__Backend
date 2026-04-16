@@ -1,12 +1,12 @@
 using Conversation.Application.Interface;
 using Conversation.Infrastructure.Persistence;
-using Conversation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Conversation.Infrastructure.Persistence.Entities;
 
 namespace Conversation.Infrastructure.Repositories
 {
@@ -25,7 +25,7 @@ namespace Conversation.Infrastructure.Repositories
             if (message.SenderId == Guid.Empty)
                 throw new InvalidOperationException("SenderId cannot be empty");
 
-            if (string.IsNullOrWhiteSpace(message.messagetext))
+            if (string.IsNullOrWhiteSpace(message.MessageText))
                 throw new InvalidOperationException("MessageText cannot be empty");
 
             _context.Messages.Add(message);
@@ -38,6 +38,11 @@ namespace Conversation.Infrastructure.Repositories
                 .Where(m => m.ConversationId == conversationId)
                 .OrderBy(m => m.CreatedAt)
                 .ToListAsync();
+        }
+
+        public async Task<Message?> GetByIdAsync(Guid id)
+        {
+            return await _context.Messages.FirstOrDefaultAsync(m => m.Id == id);
         }
 
         public async Task UpdateAsync(Message message)

@@ -1,4 +1,5 @@
-using Conversation.Domain.Entities;
+
+using Conversation.Infrastructure.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿using Conversation.Domain.Enum;
+using Conversation.Domain.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +18,8 @@ namespace Conversation.Application.DTOs
         public int SenderType { get; set; }
         public string Status { get; set; }
         public Guid? TargetUserId { get; set; }
+        public Guid? ParentMessageId { get; set; }
+        public string? Reactions { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Conversation.Domain.Entities;
+namespace Conversation.Infrastructure.Persistence.Entities;
 
 public partial class Message
 {
@@ -11,7 +11,7 @@ public partial class Message
 
     public int SenderType { get; set; }
 
-    public string messagetext { get; set; } = null!;
+    public string MessageText { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; }
 
@@ -22,6 +22,10 @@ public partial class Message
     public int? Status { get; set; }
 
     public Guid? TargetUserId { get; set; }
+
+    public Guid? ParentMessageId { get; set; }
+
+    public string? Reactions { get; set; }
 
     public virtual ConversationSystem Conversation { get; set; } = null!;
 }

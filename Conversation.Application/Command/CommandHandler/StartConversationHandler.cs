@@ -1,6 +1,7 @@
 ﻿using Conversation.Application.Interface;
-using Conversation.Domain.Entities;
+
 using Conversation.Domain.Enum;
+using Conversation.Infrastructure.Persistence.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;

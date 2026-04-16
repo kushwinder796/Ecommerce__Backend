@@ -1,7 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Conversation.Domain.Entities;
+namespace Conversation.Infrastructure.Persistence.Entities;
 
 public partial class ConversationSystem
 {

@@ -1,7 +1,6 @@
 using Conversation.Application.DTOs;
 using Conversation.Application.Queries;
 using Conversation.Application.Interface;
-using Conversation.Domain.Entities;
 using Conversation.Domain.Enum;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -25,12 +24,13 @@ public class GetAllConversationsQueryHandler : IRequestHandler<GetAllConversatio
     {
         try
         {
-            
-            var conversations = await _conversationRepository.GetAllAsQueryable()
+            var rawConversations = await _conversationRepository.GetAllAsQueryable()
                 .Include(c => c.Messages)  
                 .Where(c => c.Status == (int)ConversationStatus.Open)  
                 .OrderByDescending(c => c.UpdatedAt ?? c.CreatedAt)  
-                .Select(c => new ConversationResponse
+                .ToListAsync(cancellationToken);
+
+            var conversations = rawConversations.Select(c => new ConversationResponse
                 {
                     ConversationId = c.Id,
                     Id = c.Id,
@@ -46,21 +46,23 @@ public class GetAllConversationsQueryHandler : IRequestHandler<GetAllConversatio
                         {
                             Id = m.Id,
                             ConversationId = m.ConversationId,
-                            SenderId = m.SenderId,                    //  Real user ID
+                            SenderId = m.SenderId,                    
                             SenderName = m.SenderName ??
                                 (m.SenderType == (int)SenderType.Admin
                                     ? "Support Admin"
-                                    : "Customer"),                    //  Real name
-                            MessageText = m.messagetext,              //  Your property name
-                            Text = m.messagetext,                     //  Alias for frontend compatibility
+                                    : "Customer"),                    
+                            MessageText = m.MessageText,              
+                            Text = m.MessageText,                     
                             SenderType = m.SenderType,
                             Status = m.Status == null ? "Sent" : m.Status.ToString(),
                             TargetUserId = m.TargetUserId,
-                            CreatedAt = m.CreatedAt
+                            CreatedAt = m.CreatedAt,
+                            ParentMessageId = m.ParentMessageId,
+                            Reactions = m.Reactions
                         })
                         .ToList()
                 })
-                .ToListAsync(cancellationToken);
+                .ToList();
 
             return conversations;
         }

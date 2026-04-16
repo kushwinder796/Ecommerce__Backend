@@ -17,8 +17,6 @@ namespace Conversation.Application.DTOs
         public List<MessageResponse> Messages { get; set; } = new();
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-
-       
         public Guid? SenderId { get; set; }
         public string? SenderName { get; set; }
         public Guid? TargetUserId { get; set; }

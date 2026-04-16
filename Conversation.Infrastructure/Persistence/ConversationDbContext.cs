@@ -1,6 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using Conversation.Domain.Entities;
+using Conversation.Infrastructure.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conversation.Infrastructure.Persistence;
@@ -65,7 +65,7 @@ public partial class ConversationDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("created_at");
-            entity.Property(e => e.messagetext).HasColumnName("message");
+            entity.Property(e => e.MessageText).HasColumnName("message");
             entity.Property(e => e.SenderId).HasColumnName("sender_id");
             entity.Property(e => e.SenderName).HasMaxLength(255);
             entity.Property(e => e.SenderType).HasColumnName("sender_type");

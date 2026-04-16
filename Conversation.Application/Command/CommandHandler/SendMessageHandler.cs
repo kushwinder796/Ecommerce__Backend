@@ -1,7 +1,7 @@
 using Conversation.Application.Command;
 using Conversation.Application.Interface;
-using Conversation.Domain.Entities;
 using Conversation.Domain.Enum;
+using Conversation.Infrastructure.Persistence.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -56,10 +56,11 @@ public class SendMessageCommandHandler : IRequestHandler<SendMessageCommand, Uni
                 Id = Guid.NewGuid(),
                 ConversationId = command.ConversationId,
                 SenderId = command.SenderId.Value,              //  Real user ID from JWT (Now using .Value)
-                messagetext = command.MessageText,         //  Your property name
+                MessageText = command.MessageText,         //  Your property name
                 SenderName = command.SenderName,           //  Cache sender name
                 SenderType = (int)command.SenderType,           //  USER or ADMIN
                 TargetUserId =command.TargetUserId,       //  For admin replies
+                ParentMessageId = command.ParentMessageId, // For replies
                 Status = (int?)MessageStatus.Sent,             
                 CreatedAt = DateTime.UtcNow
             };

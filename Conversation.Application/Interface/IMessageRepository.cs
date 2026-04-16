@@ -1,4 +1,4 @@
-using Conversation.Domain.Entities;
+using Conversation.Infrastructure.Persistence.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace Conversation.Application.Interface
     {
         Task AddAsync(Message message);
         Task<List<Message>> GetByConversationIdAsync(Guid conversationId);
+        Task<Message?> GetByIdAsync(Guid id);
         Task UpdateAsync(Message message);
     }
 }
