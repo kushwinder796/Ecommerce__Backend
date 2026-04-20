@@ -35,10 +35,32 @@ namespace Ecommerce_13.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
-            var command = new LoginUserCommand(dto.Email,dto.Password);
+            if (string.IsNullOrWhiteSpace(dto.Email)|| string.IsNullOrWhiteSpace(dto.Password))
+            {
+                return BadRequest(
+                    new ApiResponse<string>
+                    {
+                        Success = false,
+                        Message="Email and password are required"
+                     });
+            }
 
-            var result = await _mediator.Send(command);
-            return Ok(ApiResponse<AuthResponseDto>.SuccessResult(result, "Login successful"));
+            try
+            {
+                var command = new LoginUserCommand(dto.Email, dto.Password);
+
+                var result = await _mediator.Send(command);
+                return Ok(ApiResponse<AuthResponseDto>.SuccessResult(result, "Login successful"));
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                return Unauthorized(ApiResponse<string>.FailResult(ex.Message));
+            }
+            catch(Exception)
+            {
+                return StatusCode(500, ApiResponse<string>.FailResult("Something  went wrong "));
+            }
+
         }
 
         [HttpGet]

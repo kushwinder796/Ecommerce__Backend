@@ -23,15 +23,15 @@ namespace Identity.Application.Command.CommandHandler
         public async Task<AuthResponseDto> Handle(LoginUserCommand request,CancellationToken cancellationToken)
         {
           
-            var user = await _unitOfWork.Users.GetByEmailAsync(request.Email)
-                ?? throw new KeyNotFoundException(
-                    "Invalid email or password");
+            var user = await _unitOfWork.Users.GetByEmailAsync(request.Email);
 
-           
-            if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
-                throw new KeyNotFoundException(
-                    "Invalid email or password");
 
+            if ( user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
+            {
+                throw new UnauthorizedAccessException("Invalid email or password");
+            }
+
+       
             
             if (user.Isactive == false)throw new UnauthorizedAccessException(
                 "Account is disabled");
