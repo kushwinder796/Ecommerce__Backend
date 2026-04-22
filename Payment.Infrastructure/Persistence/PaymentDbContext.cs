@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Payment.Infrastructure.Persistence.Entities;
+using Payment.Domain.Entities;
 
 namespace Payment.Infrastructure.Persistence;
 

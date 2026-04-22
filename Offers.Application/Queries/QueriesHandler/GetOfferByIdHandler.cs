@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Offers.Application.DTOs;
 using Offers.Application.Interface;
-using Offers.Infrastructure.Persistence.Entities;
+using Offers.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,7 @@ namespace Offers.Application.Queries.QueriesHandler
             return new OfferDto
             {
                 Id = offer.Id,
+                ProductId = offer.ProductId,
                 OrderId = offer.OrderId,
                 OfferedPrice = offer.OfferedPrice,
                 Status = offer.Status,

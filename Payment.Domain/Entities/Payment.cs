@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Payment.Infrastructure.Persistence.Entities;
+namespace Payment.Domain.Entities;
 
 [Table("payments", Schema = "payments")]
 public partial class PaymentSystem
@@ -18,7 +18,7 @@ public partial class PaymentSystem
 
     [Column("payment_method")]
     [StringLength(50)]
-    public string PaymentMethod { get; set; }
+    public string? PaymentMethod { get; set; }
 
     [Column("amount")]
     [Precision(12, 2)]
@@ -26,11 +26,11 @@ public partial class PaymentSystem
 
     [Column("payment_status")]
     [StringLength(50)]
-    public string PaymentStatus { get; set; }
+    public string? PaymentStatus { get; set; }
 
     [Column("transaction_id")]
     [StringLength(255)]
-    public string TransactionId { get; set; }
+    public string? TransactionId { get; set; }
 
     [Column("created_at", TypeName = "timestamp without time zone")]
     public DateTime? CreatedAt { get; set; }

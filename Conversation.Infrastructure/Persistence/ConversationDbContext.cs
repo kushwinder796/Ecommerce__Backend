@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Conversation.Infrastructure.Persistence;

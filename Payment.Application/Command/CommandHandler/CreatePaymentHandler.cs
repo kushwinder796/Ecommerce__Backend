@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Payment.Application.DTOs;
 using Payment.Application.Interface;
-using Payment.Infrastructure.Persistence.Entities;
+using Payment.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

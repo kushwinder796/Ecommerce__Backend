@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 
 namespace Conversation.Infrastructure.Repositories
 {

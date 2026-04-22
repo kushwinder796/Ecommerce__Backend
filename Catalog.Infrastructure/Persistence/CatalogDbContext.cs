@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Catalog.Infrastructure.Persistence.Entities;
+using Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Catalog.Infrastructure.Persistence;

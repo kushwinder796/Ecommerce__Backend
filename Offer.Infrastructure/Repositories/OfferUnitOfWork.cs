@@ -1,11 +1,5 @@
 ﻿using Offers.Application.Interface;
 using Offers.Infrastructure.Persistence;
-using Order.Infrastructure.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Offers.Infrastructure.Repositories
 {

@@ -1,4 +1,4 @@
-﻿using Offers.Infrastructure.Persistence.Entities;
+﻿using Offers.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +11,7 @@ namespace Offers.Application.Interface
     {
         Task<IEnumerable<Offer>> GetAllAsync();
         Task<Offer?> GetByIdAsync(Guid id);
+        Task<IEnumerable<Offer>> GetByProductIdAsync(Guid productId);
         Task AddAsync(Offer offer);
         Task UpdateAsync(Offer offer);
         Task DeleteAsync(Guid id);

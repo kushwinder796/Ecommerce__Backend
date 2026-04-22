@@ -1,6 +1,6 @@
 ﻿using Catalog.Application.Interface;
 using Catalog.Infrastructure.Persistence;
-using Catalog.Infrastructure.Persistence.Entities;
+using Catalog.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

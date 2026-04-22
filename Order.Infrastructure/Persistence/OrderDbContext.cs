@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Order.Infrastructure.Persistence.Entities;
+using Order.Domain.Entities;
 namespace Orders.Infrastructure.Persistence;
 
 

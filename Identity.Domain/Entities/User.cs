@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Identity.Infrastructure.Persistence.Entities;
+namespace Identity.Domain.Entities;
 
 [Table("users", Schema = "identity")]
 [Index("Email", Name = "users_email_key", IsUnique = true)]
@@ -25,15 +25,15 @@ public partial class User
 
     [Column("first_name")]
     [StringLength(100)]
-    public string FirstName { get; set; }
+    public string? FirstName { get; set; }
 
     [Column("last_name")]
     [StringLength(100)]
-    public string LastName { get; set; }
+    public string? LastName { get; set; }
 
     [Column("role")]
     [StringLength(50)]
-    public string Role { get; set; }
+    public string? Role { get; set; }
 
     [Column("isactive")]
     public bool? Isactive { get; set; }

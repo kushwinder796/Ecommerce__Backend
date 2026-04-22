@@ -1,5 +1,5 @@
 ﻿using Catalog.Application.Interface;
-using Catalog.Infrastructure.Persistence.Entities;
+using Catalog.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;

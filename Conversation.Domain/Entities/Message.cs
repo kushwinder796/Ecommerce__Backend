@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Conversation.Infrastructure.Persistence.Entities;
+namespace Conversation.Domain.Entities;
 
 public partial class Message
 {

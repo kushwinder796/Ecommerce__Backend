@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Offers.Application.Interface;
 using Offers.Infrastructure.Persistence;
-using Offers.Infrastructure.Persistence.Entities;
+using Offers.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +24,11 @@ namespace Offers.Infrastructure.Repositories
 
         public async Task<Offer?> GetByIdAsync(Guid id)
             => await _context.Offers.FindAsync(id);
+
+        public async Task<IEnumerable<Offer>> GetByProductIdAsync(Guid productId)
+            => await _context.Offers
+                .Where(o => o.ProductId == productId)
+                .ToListAsync();
 
         public async Task AddAsync(Offer offer)
         {

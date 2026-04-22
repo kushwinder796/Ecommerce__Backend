@@ -1,5 +1,5 @@
 ﻿using Identity.Application.Interface;
-using Identity.Infrastructure.Persistence.Entities;
+using Identity.Domain.Entities;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using Offers.Domain.Entities;
 
-namespace Catalog.Infrastructure.Persistence.Entities;
+namespace Catalog.Domain.Entities;
 
 [Table("products", Schema = "catalog")]
 public partial class Product
@@ -19,7 +20,7 @@ public partial class Product
     public string Name { get; set; }
 
     [Column("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     [Column("price")]
     [Precision(10, 2)]
@@ -36,9 +37,10 @@ public partial class Product
 
     [Column("image_url")]
     [StringLength(500)]
-    public string ImageUrl { get; set; }
+    public string? ImageUrl { get; set; }
 
     [ForeignKey("CategoryId")]
     [InverseProperty("Products")]
     public virtual Category Category { get; set; }
+    public virtual ICollection<Offer> Offers { get; set; }
 }

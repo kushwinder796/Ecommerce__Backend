@@ -1,4 +1,4 @@
-﻿using Identity.Infrastructure.Persistence.Entities;
+﻿using Identity.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

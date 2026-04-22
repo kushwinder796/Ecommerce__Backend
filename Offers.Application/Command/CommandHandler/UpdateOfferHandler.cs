@@ -37,6 +37,7 @@ namespace Offers.Application.Command.CommandHandler
             return new OfferDto
             {
                 Id = offer.Id,
+                ProductId = offer.ProductId,
                 OrderId = offer.OrderId,
                 OfferedPrice = offer.OfferedPrice,
                 Status = offer.Status,

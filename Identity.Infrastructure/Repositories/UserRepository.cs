@@ -1,6 +1,6 @@
 ﻿using Identity.Application.Interface;
 using Identity.Infrastructure.Persistence;
-using Identity.Infrastructure.Persistence.Entities;
+using Identity.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

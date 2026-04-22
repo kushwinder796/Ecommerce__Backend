@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Order.Infrastructure.Persistence.Entities;
+namespace Order.Domain.Entities;
 
 [Table("orders", Schema = "orders")]
 public partial class OrderEntity

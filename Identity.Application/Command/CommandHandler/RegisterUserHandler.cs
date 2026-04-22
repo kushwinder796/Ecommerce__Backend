@@ -1,7 +1,7 @@
 ﻿using BCrypt.Net;
 using Identity.Application.DTOs;
 using Identity.Application.Interface;
-using Identity.Infrastructure.Persistence.Entities;
+using Identity.Domain.Entities;
 using MediatR;
 using System;
 using System.Collections.Generic;

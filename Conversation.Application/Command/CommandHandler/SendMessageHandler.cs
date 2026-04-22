@@ -1,7 +1,7 @@
 using Conversation.Application.Command;
 using Conversation.Application.Interface;
 using Conversation.Domain.Enum;
-using Conversation.Infrastructure.Persistence.Entities;
+using Conversation.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Offers.Infrastructure.Persistence.Entities;
+using Offers.Domain.Entities;
 
 namespace Offers.Infrastructure.Persistence;
 
@@ -28,8 +28,23 @@ public partial class OffersDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("offers_pkey");
 
-            entity.Property(e => e.Id).ValueGeneratedNever();
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.ToTable("offers", "negotiation");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("id");
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp without time zone")
+                .HasColumnName("created_at");
+            entity.Property(e => e.OfferedPrice)
+                .HasPrecision(10, 2)
+                .HasColumnName("offered_price");
+            entity.Property(e => e.OrderId).HasColumnName("order_id");
+            entity.Property(e => e.ProductId).HasColumnName("product_id");
+            entity.Property(e => e.Status)
+                .HasMaxLength(50)
+                .HasColumnName("status");
         });
 
         OnModelCreatingPartial(modelBuilder);

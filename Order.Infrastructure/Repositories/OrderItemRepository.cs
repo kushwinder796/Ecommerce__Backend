@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Order.Application.Interface;
-using Order.Infrastructure.Persistence.Entities;
+using Order.Domain.Entities;
 using Orders.Infrastructure.Persistence;
 using System;
 using System.Collections.Generic;

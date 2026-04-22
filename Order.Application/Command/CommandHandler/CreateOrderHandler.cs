@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Order.Application.Interface;
-using Order.Infrastructure.Persistence.Entities;
+using Order.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

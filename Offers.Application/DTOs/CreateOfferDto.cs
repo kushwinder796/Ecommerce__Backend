@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Offers.Application.DTOs
 {
-    public  class CreateOfferDto
+    public class CreateOfferDto
     {
+        public Guid ProductId { get; set; }
         public Guid? OrderId { get; set; }
         public decimal OfferedPrice { get; set; }
     }

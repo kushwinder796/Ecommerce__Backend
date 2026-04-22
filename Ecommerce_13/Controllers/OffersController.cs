@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Offers.Application.Command;
 using Offers.Application.DTOs;
 using Offers.Application.Queries;
-using Order.Application.Queries;
-
 namespace Ecommerce_13.Controllers
 {
     [Route("api/[controller]")]
@@ -42,6 +40,17 @@ namespace Ecommerce_13.Controllers
 
             return Ok(ApiResponse<OfferDto>.SuccessResult( result,message: "Offer retrieved successfully",statusCode: 200));
         }
+
+        [HttpGet("product/{productId:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<IEnumerable<OfferDto>>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetByProduct(Guid productId, CancellationToken ct)
+        {
+            var result = await _mediator.Send(new GetOffersByProductIdQuery(productId), ct);
+
+            return Ok(ApiResponse<IEnumerable<OfferDto>>.SuccessResult(result,
+                message: "Offers for product retrieved successfully", statusCode: 200));
+        }
+
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<OfferDto>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<string>), StatusCodes.Status400BadRequest)]

@@ -27,6 +27,7 @@ namespace Offers.Application.Queries.QueriesHandler
             return offers.Select(o => new OfferDto
             {
                 Id = o.Id,
+                ProductId = o.ProductId,
                 OrderId = o.OrderId,
                 OfferedPrice = o.OfferedPrice,
                 Status = o.Status,

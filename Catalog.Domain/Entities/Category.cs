@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace Catalog.Infrastructure.Persistence.Entities;
+namespace Catalog.Domain.Entities;
 
 [Table("categories", Schema = "catalog")]
 public partial class Category
@@ -19,7 +19,7 @@ public partial class Category
     public string Name { get; set; }
 
     [Column("description")]
-    public string Description { get; set; }
+    public string? Description { get; set; }
 
     [Column("created_at", TypeName = "timestamp without time zone")]
     public DateTime? CreatedAt { get; set; }

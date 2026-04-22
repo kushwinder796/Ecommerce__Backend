@@ -1,5 +1,5 @@
 ﻿
-using Catalog.Infrastructure.Persistence.Entities;
+using Catalog.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
